@@ -2,11 +2,21 @@
 // 大O 表示:  O(log n)
 
 function binary_search(list, item) {
-  let low = 0,
-    high = list.length - 1,
-    mid = (low + high) / 2;
-    
+  let mid = 0,
+    low = 0,
+    high = list.length - 1;
+  while (low <= high) {
+    mid = Math.floor((low + high) / 2);
+    if (list[mid] === item) {
+      return mid;
+    } else if (list[mid] > item) {
+      high = mid - 1;
+    } else {
+      low = mid + 1;
+    }
+  }
+  return -1;
 }
 
-const list = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+const list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 console.log(binary_search(list, 9));
