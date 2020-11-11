@@ -40,14 +40,15 @@ function findMax(list) {
 console.log(findMax(arr2));
 
 // 快速排序是一种常见的排序算法,比选择排序快得多, 也使用了D&C
+// 快排在平均情况下的运行时间O(n log n), 极端情况下为 O(n²)
 // 思路: 找准基, 分左右数组, 小于基准的在左, 大于反之. 最后 3个数组相加
 const arr3 = [10, 15, 1, 8, 3];
 function quicksort(arr) {
   if (arr.length < 2) {
     return arr;
   } else {
-    let pivot = arr[0];
-    let less = [],
+    const pivot = arr[0];
+    const less = [],
       greater = [];
     for (let i = 1; i < arr.length; i++) {
       if (arr[i] <= pivot) {
@@ -60,3 +61,33 @@ function quicksort(arr) {
   }
 }
 console.log(quicksort(arr3));
+
+// 为了使快排的平均运行时间达到 O(n log n), 基准值必须随机选择
+const arr4 = [2, 352, 31, 98, 76, 8, 71];
+function quicksort2(arr) {
+  // 记住, 递归首先要定义好 基准条件
+  if (arr < 2) {
+    return arr;
+  } else {
+    // 其次是 递归条件
+    const pivot_index = getRandom(0, arr.length - 1);
+    const pivot = arr[pivot_index];
+    arr.splice(pivot_index, 1);
+    const less = [],
+      greater = [];
+    arr.forEach((ele) => {
+      if (ele <= pivot) {
+        less.push(ele);
+      } else {
+        greater.push(ele);
+      }
+    });
+    return quicksort2(less).concat(pivot).concat(quicksort2(greater));
+  }
+}
+
+function getRandom(n, m) {
+  return Math.floor(Math.random() * (m - n + 1) + n);
+}
+
+console.log(quicksort2(arr4));
