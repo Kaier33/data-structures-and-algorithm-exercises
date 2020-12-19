@@ -81,8 +81,28 @@ console.log(deque.peekFront());
 deque.removeFront();
 deque.removeBack();
 deque.addFront("John");
-deque.addBack('Lau')
-console.log(deque.toString())
+deque.addBack("Lau");
+console.log(deque.toString());
 console.log(deque);
 
 // exercise
+// 回文检查
+function palindromeChecker(aStr) {
+  if (!aStr) return false;
+  let str = aStr.toLocaleLowerCase().split(" ").join(); // 转成小写 去空格
+  const deque = new Deque();
+  let isPalindrome = true;
+  let firstChar = "",
+    lastChar = "";
+  for (let i = 0; i < str.length; i++) {
+    deque.addBack(str[i]);
+  }
+  while (deque.size() > 1 && isPalindrome) {
+    firstChar = deque.removeFront();
+    lastChar = deque.removeBack();
+    if (firstChar !== lastChar) isPalindrome = false;
+  }
+  return isPalindrome;
+}
+
+console.log(palindromeChecker("MADam"));
