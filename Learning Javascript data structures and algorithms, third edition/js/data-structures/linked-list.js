@@ -90,6 +90,10 @@ class LinkedList {
   getHead() { return this.head }
   isEmpty() { return this.size() === 0 }
   size() { return this.count }
+  clear() {
+    this.head = undefined
+    this.count = 0
+  }
   toString() {
     if (this.isEmpty()) return ''
     let str = this.head.element
@@ -113,4 +117,4 @@ list.instert(0, 0)
 list.instert(7, 7)
 console.log('size:', list.size())
 console.log(list.toString())
-console.log(list.indexOf(7))
+console.log(list.indexOf(7)) 
