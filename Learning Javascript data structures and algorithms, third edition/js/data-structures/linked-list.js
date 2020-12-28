@@ -1,4 +1,4 @@
-// 链表 (由 head + nodes 组成的数据结构)
+// 链表
 
 const Util = require("../util")
 class Node {
@@ -15,8 +15,6 @@ class LinkedList {
     this.equalsFn = equalsFn // 要么用默认的, 要么自己传进来一个比较函数
   }
   push(element) {
-    if (!element) return undefined
-
     const node = new Node(element)
     if (!this.head) {
       this.head = node
@@ -52,7 +50,6 @@ class LinkedList {
     return this.removeAt(index)
   }
   indexOf(element) {
-    if (!element) return -1
     let current = this.head
     for (let i = 0; i < this.count; i++) {
       if (this.equalsFn(current.element, element)) {

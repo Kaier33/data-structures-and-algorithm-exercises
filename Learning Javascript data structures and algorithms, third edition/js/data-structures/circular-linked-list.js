@@ -1,4 +1,4 @@
-// 链表 
+// 链表
 
 const Util = require('../util')
 class Node {
@@ -110,58 +110,42 @@ class LinkedList {
   }
 }
 
-class DoublyNode extends Node {
-  constructor(element) {
-    super(element)
-    this.prev = undefined
-  }
-}
-
-class DoublyLinkedList extends LinkedList {
+class CircularLinkedList extends LinkedList {
   constructor(equalsFn = Util.defaultEquals) {
     super(equalsFn)
-    this.tail = undefined
   }
   push(element) {
-    const node = new DoublyNode(element)
+    const node = new Node(element)
     if (!this.head) {
       this.head = node
-      this.tail = node
     } else {
-      this.tail.next = node
-      node.prev = this.tail
-      this.tail = node
+      let current = this.getElementAt(this.size() - 1) // 获取最后一个
+      current.next = node
     }
+    node.next = this.head
     this.count++
   }
   instert(element, index) {
     if (index >= 0 && index <= this.count) {
-      const node = new DoublyNode(element)
-      let current = this.head
+      const node = new Node(element)
       if (index === 0) {
-        // 在head处插入
-        if (this.count === 0) {
+        let current = this.head
+        if (this.size() === 0) {
           this.head = node
-          this.tail = node
+          node.next = this.head
         } else {
-          current.prev = node
           node.next = current
+          current = this.getElementAt(this.size()) // 获取最后一个元素, 让其next指向head
           this.head = node
+          current.next = this.head
         }
-      } else if (index === this.count) {
-        // 在tail处插入
-        current = this.tail
-        current.next = node
-        node.prev = current
-        this.tail = node
+        node.next = current
+        this.head = node
       } else {
-        // 中间任意位置插入
-        let prev = this.getElementAt(index - 1)
-        current = prev.next
-        current.prev = node
+        const prev = this.getElementAt(index - 1)
+        const current = prev.next
         prev.next = node
         node.next = current
-        node.prev = prev
       }
       this.count++
       return true
@@ -169,47 +153,36 @@ class DoublyLinkedList extends LinkedList {
     return false
   }
   removeAt(index) {
-    if (index >= 0 && index < this.count) {
+    if (index >= 0 && index <= this.count) {
       let current = this.head
-      // 考虑事项: 删头, 删尾, 中间任意位置
       if (index === 0) {
-        if (this.count === 1) {
+        if (this.size === 1) {
           this.head = undefined
-          this.tail = undefined
         } else {
-          this.head = current.next
-          this.head.prev = undefined
+          const remove = this.head
+          current = this.getElementAt(this.size()) // 获取最后一个
+          this.head = this.head.next
+          current.next = this.head
+          current = remove // 用于在最后返回出去被删掉的元素
         }
-      } else if (index === this.count - 1) {
-        current = this.tail
-        this.tail = current.prev
-        this.tail.next = undefined
       } else {
-        current = this.getElementAt(index)
-        let next = current.next
-        next.prev = current.prev
-        current.prev.next = next
+        let prev = this.getElementAt(index - 1)
+        current = prev.next
+        prev.next = current.next
       }
       this.count--
       return current.element
     }
     return undefined
   }
-  getTail() {
-    return this.tail
-  }
-  clear() {
-    super.clear()
-    this.tail = undefined
-  }
 }
 
-const doublyLinkedList = new DoublyLinkedList()
-doublyLinkedList.push(1)
-doublyLinkedList.push(3)
-doublyLinkedList.instert(2, 1)
-doublyLinkedList.push(4)
-doublyLinkedList.removeAt(3)
-// console.log(doublyLinkedList)
-console.log(doublyLinkedList.toString())
-console.log('length::', doublyLinkedList.size())
+const circularLinkedList = new CircularLinkedList()
+
+circularLinkedList.push(2)
+// circularLinkedList.push(3)
+circularLinkedList.instert(1, 0)
+circularLinkedList.instert(3, 2)
+console.log(circularLinkedList.toString())
+console.log('size:', circularLinkedList.size())
+console.log(circularLinkedList)
